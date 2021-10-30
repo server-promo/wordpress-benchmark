@@ -2,9 +2,9 @@ version: '3'
 
 services:
   wp:
-    image: wordpress:latest # https://hub.docker.com/_/wordpress/
+    image: wordpress:5.8.1-php8.0-apache # https://hub.docker.com/_/wordpress/
     ports:
-      - ${IP}:80:80 # change ip if required
+      - ${IP}:8081:80 # change ip if required
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html # Full wordpress project
@@ -20,36 +20,10 @@ services:
     links:
       - db
 
-  wpcli:
-    image: wordpress:cli
-    volumes:
-      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: "${DB_NAME}"
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
-    depends_on:
-      - db
-      - wp
-
-  pma:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
-      PMA_HOST: db
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-    ports:
-      - ${IP}:8080:80
-    links:
-      - db:db
-
   db:
     image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
     ports:
-      - ${IP}:3306:3306 # change ip if required
+      - ${IP}:3307:3306 # change ip if required
     command: [
         '--default_authentication_plugin=mysql_native_password',
         '--character-set-server=utf8mb4',
@@ -61,6 +35,7 @@ services:
     environment:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_ROOT_HOST: '%'
 
 volumes:
   db_data:
