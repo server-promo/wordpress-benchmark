@@ -25,7 +25,7 @@ These Ubuntu packages should be installed:
 ## Usage
 
 ```
-bash benchmark.sh -s "/root/benchnark/wordpress-benchmark/wp_out_c1.csv" -m "/root/benchnark/wordpress-benchmark/wp_out_c50.csv"
+bash benchmark.sh -s "/root/benchmark/wordpress-benchmark/wp_out_c1.csv" -m "/root/benchmark/wordpress-benchmark/wp_out_c50.csv"
 ```
 
 ## Analyze
